@@ -1,0 +1,85 @@
+涉及协议：
+FilterLoad
+FilterAdd
+FilterClear
+MerkleBlock
+
+算法：
+是一种由Burton Howard Bloom发明的算法。用于快速而节省空间的判断一个值是否在一个集合中。
+https://www.jianshu.com/p/8193d7dc8348
+
+BloomFilter有一定的概率出错，是一种 false positive错误。简单的说，就是本来不在集合中的，认为在集合中。
+但是在集合中的，肯定不会出错。
+
+初衷:
+在比特币中的应用，就是往往需要判断一个tx是否在一个tx集合中。spv钱包用于获取与自己相关的钱
+ BIP: 37
+https://github.com/bitcoin/bips/blob/master/bip-0037.mediawiki
+
+spv钱包不需要block中的所有交易。需要过滤掉与自己无关的交易。
+在使用bloom filter以前。spv客户端需要下载整个block的所有交易，然后抛弃与当前钱包无关的交易，效率低下。
+
+流程：
+1. FilterLoad设置Filter
+2. (中间步骤可调用FilterAdd改变Filter)
+3. 通过getdata获取merkle block. getdata的类型得为MSG_MERKLEBLOCK。getdata的触发条件和以前一样，往往在inv之后进行.
+4. 发送方返回MerkleBlock。
+5.  发送方还会主动返回对应的tx。通过tx协议单独发送（原因是目前缺少取指定tx的协议）
+6. FilterClear取消Filter
+
+协议说明：
+FilterLoad:
+1. 设置filter. 【nFilterBytes: bit field所占字节数。filter:bit field】。本地选择合适的过滤字段后（见3）设置，传递到服务器。服务器比较是否符合此filter。
+2. 提供hash参数【nHashFuncs：hash个数。nTweak：随机数】。服务器依次构建同样的hash函数（btc对bloom filter的实现，不是提供多个hash。而是只有一个hash，通过参数构造seed,  一个hash运算多次，形成多个hash的效果。seed计算公式nHashNum * 0xfba4c795 + nTweak）
+告知接受方，开始对tx进行过滤。
+02 ......... Filter bytes: 2
+b50f ....... Filter: 1010 1101 1111 0000
+0b000000 ... nHashFuncs: 11
+00000000 ... nTweak: 0/none
+00 ......... nFlags: BLOOM_UPDATE_NONE
+
+3. 接收方对每个tx的以下字段进行hash运算，设置bit field, 然后把bit field和FilterLoad传递的bit field对比。通过则说明该tx有效。FilterLoad往往选择tx中的部分字段参加运算，而不是全部字段（bloom.cpp)
+TXID
+Outpoints
+Signature Script Data
+PubKey Script Data
+
+4. 还可以通过设置nFlags。当满足条件时在服务器端更新上传的filter. 改变filter范围
+
+FilterAdd:
+发送方主动更新接受方的Filter，改变Filter范围，只能增加，不能减少
+必须要通过FilterLoad在接受方设置过filter, 才能使用FilterAdd
+
+FilterClear:
+取消Filter
+
+MerkleBlock:
+1. 响应getdata。当getdata的type设置为MSG_MERKLEBLOCK，且filter被设置之后。返回MerkleBlock.
+2. MerkleBlock包含block header. 以及满足filter条件的tx hash 列表，不包含tx的其他信息。tx的信息在随后由发送方通过tx主动发出（不可主动由getdata获取。getdata只在inv之后存在）
+3. 通过flags来确定merkle路径。1表示主线，如果在叶子结点，表示满足过滤的交易，在父节点，表示需要通过左右子结点计算。0表示辅助线，在叶子结点，表示参加计算，但不满足过滤条件，在父节点，表示参加计算，子结点不再考虑
+
+01000000 ........................... Block version: 1
+82bb869cf3a793432a66e826e05a6fc3
+7469f8efb7421dc88067010000000000 ... Hash of previous block's header
+7f16c5962e8bd963659c793ce370d95f
+093bc7e367117b3c30c1f8fdd0d97287 ... Merkle root
+76381b4d ........................... Time: 1293629558
+4c86041b ........................... nBits: 0x04864c * 256**(0x1b-3)
+554b8529 ........................... Nonce
+
+07000000 ........................... Transaction count: 7
+04 ................................. Hash count: 4
+
+3612262624047ee87660be1a707519a4
+43b1c1ce3d248cbfc6c15870f6c5daa2 ... Hash #1
+019f5b01d4195ecbc9398fbf3c3b1fa9
+bb3183301d7a1fb3bd174fcfa40a2b65 ... Hash #2
+41ed70551dd7e841883ab8f0b16bf041
+76b7d1480e4f0af9f3d4c3595768d068 ... Hash #3
+20d2a7bc994987302e5b1ac80fc425fe
+25f8b63169ea78e68fbaaefa59379bbf ... Hash #4
+
+01 ................................. Flag bytes: 1
+1d ................................. Flags: 1 0 1 1 1 0 0 0
+
+
