@@ -1,0 +1,30 @@
+涉及协议：
+mempool
+inv
+getdata
+tx
+
+说明：
+mempool:
+当一个节点新加入网络时，往往会从其他节点获取保存在内存池中的交易，便于挖矿。此时发送mempool协议
+接收方收到mempool后，发送inv,传送txid
+一个inv只能发送50,000个交易。在btc core 0.9.0以前，一个mempool只返回一个inv。因此内存池中超出的交易将不会被发送（0.9.0版本后，可以发送多次mempool, 把所有的mempool交易发出去）
+mempool没有body部分
+
+inv:
+响应mempool
+
+getdata:
+接收到inv后调用getdata。类型为MSG_TX
+
+tx:
+tx消息在以下几种情况被发送：
+ 响应getdata. 当getdata的类型为MSG_MERKLEBLOCK，MSG_TX时，发送tx
+主动发送自身节点产生的tx
+Bytes Name Data Type Description
+4 version uint32_t Transaction version number; currently version 1. Programs creating transactions using newer consensus rules may use higher version numbers.
+Varies tx_in count compactSize uint Number of inputs in this transaction.
+Varies tx_in txIn Transaction inputs. See description of txIn below.
+Varies tx_out count compactSize uint Number of outputs in this transaction.
+Varies tx_out txOut Transaction outputs. See description of txOut below.
+4 lock_time uint32_t A time (Unix epoch time) or block number. See the locktime parsing rules.
