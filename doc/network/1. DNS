@@ -1,0 +1,9 @@
+比特币节点加入网络，必须要连接至少一台机器。
+有两种方式：
+一：通过-connect或者addnode直接指定要连接的机器
+二：通过DNS seed
+
+一个dns seed就是一个dns server.  dns server保存了一些活跃的网络节点。
+新节点询问dns server得到网络节点地址。断开于dns连接，开始与网络节点连接
+
+有许多开源的bitcoin dns软件。其中之一是https://github.com/sipa/bitcoin-seeder
