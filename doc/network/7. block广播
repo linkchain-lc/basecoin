@@ -1,0 +1,24 @@
+涉及协议：
+inv
+getheaders
+headers
+getdata
+block
+merkleblock
+sendheaders
+
+block广播有多种方式。
+
+方式一：
+直接发送block消息
+
+方式二：
+发送inv消息。
+BF结点通过getdata获取数据
+HF结点通过getheaders->headers->getdata获取数据
+
+方式三：
+直接发送headers. 跳过了inv和getheaders协议。
+HF结点如果prefer这种方式，需要发送sendheaders消息给接受方。sendheaders消息没有body
+这种方式再BIP130中提到，在0.12版本加入
+是对方式二种HF的改进。
