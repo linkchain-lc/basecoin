@@ -1,0 +1,58 @@
+涉及协议：
+getblocks
+inv
+getdata
+block
+
+说明：
+获取到peer地址加入网络之后。第一件事是下载现有完整区块链。
+在 0.9.3版本以前，使用blocks first协议方式来作为IBD( initial block download) 
+
+
+1. getblocks. 广播本地block信息
+node之间乱发getblocks。广播本地block信息。消息里面包括发送方拥有的最新block hash(可以是多个，倒序排列，最新的block在最前）。接收方接收到block之后，挨个对比接受到的block。 如果本地block高于发送方。则发送inv消息给对方
+
+getblocks协议如下：
+71110100 ........................... Protocol version: 70001
+02 ................................. Hash count: 2
+
+d39f608a7775b537729884d4e6633bb2
+105e55a16a14d31b0000000000000000 ... Hash #1
+
+5c3e6403d40837110a2e8afb602b1c01
+714bda7ce23bea0a0000000000000000 ... Hash #2
+
+00000000000000000000000000000000
+00000000000000000000000000000000 ... Stop hash
+
+2.inv 。 广播本地”优越“数据信息，等待对方同步。inv消息在以下情况被发送：
+自主发送，用于中转tx或者block。通过type区分。
+响应getblocks,发送block hash
+响应mempool. 发送内存池tx hash
+
+02 ................................. Count: 2
+
+01000000 ........................... Type: MSG_TX
+de55ffd709ac1f5dc509a0925d0b1fc4
+42ca034f224732e429081da1b621f55a ... Hash (TXID)
+
+01000000 ........................... Type: MSG_TX
+91d36d997037e08018262978766f24b8
+a055aaf1d872e94ae85e9817b2c68dc7 ... Hash (TXID)
+
+3. getdata。请求数据
+ B接受到inv. 发送getdata消息，请求数据。
+    getdata的消息格式和inv一样。
+    收到getdata后，返回block,tx,merkle block或者notfound消息
+    getdata不能获取任意block或者tx,消息。只能获取内存池或者中转的消息，一般而言，只能在inv之后使用
+
+4. block 
+   block消息在以下情况发送
+    响应getdata消息
+    主动发送，往往是在新挖到矿的时候
+Bytes Name Data Type Description
+80 block header block_header The block header in the format described in the block header section.
+Varies txn_count compactSize uint The total number of transactions in this block, including the coinbase transaction.
+Varies txns raw transaction Every transaction in this block, one after another, in raw transaction format. Transactions must appear in the data stream in the same order their TXIDsappeared in the first row of the merkle tree. See the merkle tree section for details.
+
+
