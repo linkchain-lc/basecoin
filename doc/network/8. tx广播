@@ -1,0 +1,9 @@
+涉及协议：
+inv
+getdata
+tx
+
+说明：
+inv广播
+getdata获取
+发送tx内容
