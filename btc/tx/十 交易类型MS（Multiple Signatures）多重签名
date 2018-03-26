@@ -1,0 +1,33 @@
+锁定脚本格式：
+ 	M <Public Key 1> <Public Key 2> ... <Public Key N> N CHECKMULTISIG
+
+是一个M-N签名锁定脚本。N是公钥总数。M是最少解锁脚本数目，M<=N。其中M和N不能是单纯的数字，是用OP_0到OP_16中的数字代替
+
+
+解锁脚本格式(OP_0在这里相当于占位符，由于比特币的bug及兼容性，解锁脚本需要一个OP_0，没任何实际意义)：
+OP_0 <Signature 1><Signature 2>...<Signature M~N>
+
+
+比如一个2-3多重签名脚本（一共有3个公钥，需要至少两个签名组合来解锁）如下：
+
+锁定脚本：
+OP_2 <Public Key A> <Public Key B> <Public Key C> OP_3 OP_CHECKMULTISIG
+
+解锁脚本：
+OP_0 <Signature B> <Signature C>
+
+最终验证脚本：
+OP_0 <Signature B> <Signature C> OP_2 <Public Key A> <Public Key B> <Public Key C> OP_3 OP_CHECKMULTISIG
+
+
+OP_CHECKMULTISIG验证过程：
+1. pop 栈顶元素OP_3
+2. pop OP_3对应个数的公钥。PC, PA, PA
+3. pop栈顶元素OP_2
+4. pop栈顶元素对应的签名个数+1. 	SC,  SB, OP_0	(OP_0的出现纯粹是因为bug)
+5. 从第一个Signature开始，Signature B。在Public Key列表中依次对比PA, PB, PC，寻找是否有匹配的Public Key。
+6. SinatureB满足Public Key B. 则继续Signature C. 从剩下的PublicKey开始匹配。也就是PC
+7。 SC匹配PC。完成
+
+注意Signature的顺序和Public Key的顺序必须匹配。因为Public Key的移动是单向不可逆的，一旦失败或通过匹配，则会从下一个Public Key开始，不会从头开始。比如Signature B一开始和Public Key A匹配，PA匹配失败，那么Public Key列表则向前移动一位。PA将不会出现在后续的Signature匹配计算中。
+
