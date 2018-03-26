@@ -1,0 +1,21 @@
+比特币的区块链社区主要支持以下五种交易标准：  
+P2PKH、P2PK、MS、P2SH和OP_RETURN  
+
+
+最新交易类型（script/standard.h）
+enum txnouttype
+{
+    TX_NONSTANDARD,
+    // 'standard' transaction types:
+    TX_PUBKEY,
+    TX_PUBKEYHASH,
+    TX_SCRIPTHASH,
+    TX_MULTISIG,
+    TX_NULL_DATA,
+    TX_WITNESS_V0_SCRIPTHASH,
+    TX_WITNESS_V0_KEYHASH,
+};
+
+标准交易和非标准交易：
+经过多次bug修正。比特币增加了一个IsStandard() 测试函数，用来测试交易脚本是否满足一定的格式，满足该格式的脚本成为标准脚本，能够被比特币节点普遍接纳
+不满足测试的交易脚本（比如自定的交易脚本），叫做非标准脚本。将会被大部分比特节点所不接受。
