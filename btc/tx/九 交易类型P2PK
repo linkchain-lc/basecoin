@@ -1,0 +1,10 @@
+与P2PKH相比，P2PK模式更为简单。与P2PKH模式含有公钥哈希的模式不同，在P2PK脚本模式中，公钥本身已经存储在锁定脚本中，而且代码长度也更短。P2PKH是由Satoshi创建的，主要目的一方面为使比特币地址更简短，另一方面也使之更方便使用。P2PK目前在Coinbase交易中最为常见，Coinbase交易由老的采矿软件产生，目前还没更新至P2PKH。
+
+P2PK锁定版脚本形式如下：
+<Public Key A> OP_CHECKSIG
+用于解锁的脚本是一个简单签名：
+<Signature from Private Key A>
+经由交易验证软件确认的组合脚本为：
+<Signature from Private Key A> <Public Key A> OP_CHECKSIG
+
+该脚本只是CHECKSIG操作符的简单调用，该操作主要是为了验证签名是否正确，如果正确，则返回为真（Ture）。
