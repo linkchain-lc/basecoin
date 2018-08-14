@@ -85,6 +85,9 @@ DAG的激励机制可以通过账户选择多个代表时，需要支付代表�
 
 <font color=#ff0000>待讨论</font>
 ## 分层设计
+
+![](https://github.com/linkchain-lc/basecoin/blob/master/DAG/source/researchDAG/pic7.png?raw=true)
+
 <font color=#ff0000>待讨论</font>
 ## 攻击防御
 ### 1. ddos攻击
