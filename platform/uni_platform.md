@@ -43,3 +43,6 @@
 > - 链采用区块链3.0DAG技术
 > - 链设计充分考虑扩展性和可插拔特性，分层设计合理
 > ![](https://github.com/linkchain-lc/basecoin/blob/master/platform/source/pic2.png?raw=true)
+
+### 问题？
+---
