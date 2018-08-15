@@ -13,9 +13,9 @@
 
 ### 总体架构
 ---
-> 整个系统呈现三层结构，dapp, uniplatform系统和外部链
-> uniplatform与外部链通过各自的协议通讯
-> uniplatform提供接口和服务给dapp使用
+> - 整个系统呈现三层结构，dapp, uniplatform系统和外部链
+> - uniplatform与外部链通过各自的协议通讯
+> - uniplatform提供接口和服务给dapp使用
 > ![](https://github.com/linkchain-lc/basecoin/blob/master/platform/source/pic1.png?raw=true)
 
 ### 通用开发平台描述
