@@ -1,4 +1,4 @@
-## 一个跨区块链的DAPP开发平台(uniplat)
+## 一个跨区块链的DAPP开发平台(uniplatfrom)
 
 
 ### 功能
@@ -14,9 +14,9 @@
 
 ### 总体架构
 ---
-> 整个系统呈现三层结构，dapp, uniplat系统和外部链
-> uniplat与外部链通过各自的协议通讯
-> uniplat提供接口和服务给dapp使用
+> - 整个系统呈现三层结构，dapp, uniplatform系统和外部链
+> - uniplatform与外部链通过各自的协议通讯
+> - uniplatform提供接口和服务给dapp使用
 > ![](https://github.com/linkchain-lc/basecoin/blob/master/platform/source/pic1.png?raw=true)
 
 ### 通用开发平台描述
@@ -53,3 +53,5 @@
 > 	+ 1.为需要搭建专有链的用户提供节点机器租赁服务
 > 	+ 2.为普通用户提供分布式计算服务
 > 
+### 问题？
+---
