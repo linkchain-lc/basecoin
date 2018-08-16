@@ -57,10 +57,10 @@
 ---
 
 ## 区块链开发平台
-![](/Users/lifei/Documents/workspace/linkchain/basecoin/platform/source/pic3.png)
+![](https://github.com/linkchain-lc/basecoin/blob/master/platform/source/pic3.png?raw=trueg)
 
 ### 功能
-> #### 1. 插拔于扩展
+> #### 1. 插拔与扩展
 >  提供开发者可插拔可扩展各层的功能。如一个开发者需开发一条链在共识层现在不同共识机制(pow，pos，dpos)。开发者可以在平台中扩展各层
 > #### 2. 快速搭建
 >  系统自带专有链，通过简单的配置可以快速搭建用户链。
