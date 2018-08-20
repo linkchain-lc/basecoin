@@ -24,7 +24,7 @@
 
 		为各层提供基础工具库，如数字安全，编码，序列化/反序列化等。
 		
-![](![](https://github.com/linkchain-lc/basecoin/blob/master/linkchain/source/pic1.png?raw=true))
+![](https://github.com/linkchain-lc/basecoin/blob/master/linkchain/source/pic1.png?raw=true)
 
 ## 2. 分工
 - 李晨
