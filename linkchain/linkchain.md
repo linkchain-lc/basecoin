@@ -15,11 +15,11 @@
 		
 - 核心层
 
-
 		node：程序主程序，各模块，各层之前调度
 		consensus：区块链共识模块
 		p2p：区块链网络模块
 		storage：区块，交易结构，数据存储
+		
 - 工具层
 
 		为各层提供基础工具库，如数字安全，编码，序列化/反序列化等。
@@ -49,10 +49,22 @@
 		框架设计，接口设计
 
 - 8.27~9.2
+		
+		node主流程实现
+		consensus部分实现
+		p2p和lib实现
 
 - 9.3~9.9
+		
+		strorage主流程实现，api注册调用机制实现
+		consensus实现，miner实现
+		manager实现
 
 - 9.10~9.16
+
+		node storage和api完善
+		wallet实现
+		rpc实现
 
 - 9.17~9.23
 
