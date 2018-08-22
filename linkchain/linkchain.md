@@ -74,4 +74,29 @@
 - 9.24~9.30
 
 		测试
-		
+
+## 4. 结构
+![](https://github.com/linkchain-lc/basecoin/blob/master/linkchain/source/pic6.png?raw=true)
+
+![](https://github.com/linkchain-lc/basecoin/blob/master/linkchain/source/pic5.png?raw=true)
+
+## 5. 接口
+核心层所有模块都必须提供init start stop接口。
+
+- consensus层
+ + ProcessBlock
+ + ProcessTX
+ + CheckBlock
+ + CheckTx
+ + GetMainChain
+ + GetBlock
+ + GetBestBlock
+ + GetTx
+ + GetCoin
+ + GetConsensusParams
+
+![](https://github.com/linkchain-lc/basecoin/blob/master/linkchain/source/pic2.png?raw=true)
+
+![](https://github.com/linkchain-lc/basecoin/blob/master/linkchain/source/pic3.png?raw=true)
+
+![](https://github.com/linkchain-lc/basecoin/blob/master/linkchain/source/pic4.png?raw=true)
